@@ -2,7 +2,7 @@ require 'spec_helper.rb'
 
 describe 'compound expressions' do
   context 'has function call' do
-    subject(:result) { parse('blup(2) + 1') }
+    subject(:result) { parse('blup(2)+ 1') }
     it { should be_a_full_expression(AdditiveExpression, AdditionOperator) }
     it { result.get_element(2, child: 0).should be_a FunctionCall }
     it { result.get_element(3).should be_a IntegerLiteral }

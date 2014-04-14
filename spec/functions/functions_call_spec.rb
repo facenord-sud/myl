@@ -25,4 +25,8 @@ describe 'function call' do
     it{ result.get_element(4).should be_a FunctionCall }
     it{ result.get_element(5).text_value.should eq('test2') }
   end
+  context 'after an expression' do
+    subject(:result) { parse('2.print()') }
+    it { puts result.get_element(2).should be_a FunctionCall }
+  end
 end

@@ -1,3 +1,4 @@
+require 'ap'
 required_files = []
 required_files.concat Dir[File.join(File.dirname(__FILE__), 'helpers', '**', '*.rb')]
 required_files << File.join(File.dirname(__FILE__), '..', 'lib', 'myl_parser.rb')

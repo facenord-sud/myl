@@ -27,11 +27,11 @@ describe 'assignement of a' do
     end
   end
   context 'expression' do
-    it { puts parse('test = 2+2').should be_an_assignement nil, nil }
+    it { puts parse('test = 2+2').should be_an_assignement '2+2', AdditiveExpression }
   end
   context 'function call' do
-    it { parse('test = function(args)').should be_an_assignement nil, FunctionCall }
-    it { parse('test = function()').should be_an_assignement nil, FunctionCall }
+    it { parse('test = function(args)').should be_an_assignement 'function(args)', FunctionCall }
+    it { parse('test = function()').should be_an_assignement 'function()', FunctionCall }
   end
   context 'identifier' do
     it { parse('test = ident').should be_an_assignement 'ident', Identifier }

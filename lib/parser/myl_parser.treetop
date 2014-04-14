@@ -5,179 +5,147 @@
 # More info on Treetop: http://treetop.rubyforge.org/
 
 grammar Myl
-
-  ##################
-  # Program structure
-
-  rule block
-    (comment /  statement)+ <Block>
-  end
-
-  rule statement
-    space? ( assignment  / if / unless / end_control / expression / function_call ) ';'? space? <Statement>
-  end
-  
-  ##################
-  # Assignment
-  
-  rule assignment
-    identifier space? assignment_operator space? ( expression ) <Assignment>
-  end
-
-  ##################
-  # Expressions
-  
-  rule expression
-    space? ( comparative / additive) <Expression>
-  end
-  
-  rule comparative
-    additive space? comparative_operator space? additive <ComparativeExpression>
-  end
-  
-  rule additive
-    multitive space? additive_operator space? additive <AdditiveExpression>
-    /
-    multitive 
-  end
-
-  rule multitive
-    primary space? multitive_operator space? multitive <MultitiveExpression>
-    /
-    primary 
-  end
-  
-  rule primary
-    function_call / nil / false / true / identifier / float / integer / string
-    /
-    '(' space? expression space? ')' <Expression>
-  end
-
-  ##################
-    # Flow control
-    rule end_control
-      space? 'end' space? <EndControl>
+    rule block
+        statement+ <Block>
+    end
+    rule statement
+        space? expression space? <Statement>
     end
 
-    rule if
-      'if(' space? expression space? ')' space block space? <If>
+    rule expression
+        space? (flow_control / assignment / comparative / additive) '.'? function_call? <Expression>
     end
 
-    rule unless
-      'unless(' space? expression space? ')' space block space? <Unless>
-    end
-
-    ##################
-    # Functions
-
-    rule function_call
-      identifier space? '(' space? expression? space? ','? expression? space? ')' <FunctionCall>
-    end
-
-  ##################
-  # Operator sets
-  
-  rule comparative_operator
-    equality_operator / inequality_operator / greater_than_operator / less_than_operator
-  end
-  
-  rule additive_operator
-    addition_operator / subtraction_operator 
-  end
-  
-  rule multitive_operator
-    multiplication_operator / division_operator  
-  end
-
-  ##################
-    # Literals
-
-    rule nil
-      "nil" <NilLiteral>
-    end
-
+# LITERALS
     rule true
-      "true" <TrueLiteral>
+        'true' <TrueLiteral>
     end
 
     rule false
-      "false" <FalseLiteral>
+        'false' <FalseLiteral>
+    end
+
+    rule nil
+        'nil' <NilLiteral>
     end
 
     rule integer
-      '-'? [0-9]+ <IntegerLiteral>
+        ('-')? [0-9]+ <IntegerLiteral>
     end
 
     rule float
-      ('+' / '-')? [0-9]+ '.' [0-9]+ <FloatLiteral>
+        ('-')? [0-9]+ '.' [0-9]+ <FloatLiteral>
     end
 
     rule string
-      '"' ([^"\\] / "\\" . )* '"' <StringLiteral>
+        '"' ([^"\\] / "\\" . )* '"' <StringLiteral>
     end
 
     rule identifier
-      '$'? [a-zA-Z] [a-zA-Z0-9_]* ('?' / '!')? <Identifier>
+        [a-zA-Z] [a-zA-Z0-9_]* ('?' / '!')? <Identifier>
     end
 
-  ##################
-  # Operators
+#END LITERALS
 
-  rule assignment_operator
+#FUNCTION CALL
+rule function_call
+    identifier '(' space? expression? space? ','? expression? space? ')' <FunctionCall>
+end
+#END FUNCTION CALL
+
+# FLOW CONTROL
+rule flow_control
+    unless / if
+end
+
+rule if
+    'if(' space? expression space? ')' space? '{' space? block space? '}' <If>
+end
+
+rule unless
+    'unless(' space? expression space? ')' space? '{' space? block space? '}' <Unless>
+end
+# END FLOW CONTROL
+
+# ASSIGNMENT
+rule assignment
+    identifier space? assignment_operator space? expression <Assignment>
+end
+
+rule assignment_operator
     '=' <AssignmentOperator>
-  end
-  
-  rule addition_operator
-    '+' <AdditionOperator>
-  end
-  
-  rule subtraction_operator
-    '-' <SubtractionOperator>
-  end
-  
-  rule multiplication_operator
-    '*' <MultiplicationOperator>
-  end
-  
-  rule division_operator
-    '/' <DivisionOperator>
-  end
-  
-  rule equality_operator
-    '==' <EqualityOperator>
-  end
-  
-  rule inequality_operator
-    '!=' <InEqualityOperator>
-  end
-  
-  rule greater_than_operator
-    '>' <GreaterThanOperator>
-  end
-  
-  rule less_than_operator
-    '<' <LessThanOperator>
-  end
-  
-  ##################
-  # Comments
-  
-  rule comment
-    '#' [^"\n"]* ( "\n" / end_of_file )
-  end
-  
-  ##################
-  # Whitespace
-  
-  rule space
-    [\s]+
-  end
-  
-  ##################
-  # End of file
-  
-  rule end_of_file
-    !.
-  end
+end
 
+#END ASSIGNMENT
+
+# MATH
+    rule comparative
+        primary space? comparative_operator space? primary <ComparativeExpression>
+    end
+    rule additive
+        multitive space? additive_operator space? additive  <AdditiveExpression>
+        /
+        multitive
+    end
+
+    rule multitive
+        primary space? multitive_operator space? multitive <MultitiveExpression>
+        /
+        primary
+    end
+
+    rule primary
+        (function_call / nil / true / false / identifier / float / integer / string)
+        /
+        '(' expression ')' <Expression>
+    end
+# END MATH
+
+# OPERATOR
+    rule comparative_operator
+        equality_operator / inequality_operator / greater_than_operator / less_than_operator
+    end
+    rule equality_operator
+        '==' <EqualityOperator>
+    end
+
+    rule inequality_operator
+        '!=' <InEqualityOperator>
+    end
+
+    rule greater_than_operator
+        '>' <GreaterThanOperator>
+    end
+
+    rule less_than_operator
+        '<' <LessThanOperator>
+    end
+
+    rule multitive_operator
+        multiplication_operator / division_operator
+    end
+
+    rule multiplication_operator
+        '*' <MultiplicationOperator>
+    end
+
+    rule division_operator
+        '/' <DivisionOperator>
+    end
+
+    rule additive_operator
+        addition_operator / subtraction_operator
+    end
+
+    rule subtraction_operator
+        '-' <SubtractionOperator>
+    end
+
+    rule addition_operator
+        '+' <AdditionOperator>
+    end
+# END OPERATOR
+    rule space
+        [\s]
+    end
 end

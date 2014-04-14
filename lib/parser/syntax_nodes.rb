@@ -6,13 +6,7 @@ module MylReferenceParser
     class Statement < Treetop::Runtime::SyntaxNode
     end
     
-    class HashAssignment < Treetop::Runtime::SyntaxNode
-    end
-    
     class Assignment < Treetop::Runtime::SyntaxNode
-    end
-    
-    class FunctionDefinition < Treetop::Runtime::SyntaxNode
     end
     
     class If < Treetop::Runtime::SyntaxNode
@@ -40,21 +34,6 @@ module MylReferenceParser
     end
     
     class StringLiteral < Treetop::Runtime::SyntaxNode
-    end
-    
-    class HashAccessorList < Treetop::Runtime::SyntaxNode
-    end
-    
-    class HashAccessor < Treetop::Runtime::SyntaxNode
-    end
-    
-    class HashLiteral < Treetop::Runtime::SyntaxNode
-    end
-    
-    class KeyValueList < Treetop::Runtime::SyntaxNode
-    end
-    
-    class KeyValue < Treetop::Runtime::SyntaxNode
     end
     
     class Identifier < Treetop::Runtime::SyntaxNode
@@ -89,10 +68,7 @@ module MylReferenceParser
     
     class Expression < Treetop::Runtime::SyntaxNode
     end
-    
-    class HashAccess < Treetop::Runtime::SyntaxNode
-    end
-    
+
     class ComparativeExpression < Treetop::Runtime::SyntaxNode
     end
     
@@ -101,7 +77,4 @@ module MylReferenceParser
     
     class MultitiveExpression < Treetop::Runtime::SyntaxNode
     end
-
-  class EndControl < Treetop::Runtime::SyntaxNode
-  end
 end
