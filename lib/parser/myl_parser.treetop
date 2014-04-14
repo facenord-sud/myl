@@ -59,11 +59,11 @@ rule flow_control
 end
 
 rule if
-    'if(' space? expression space? ')' space? '{' space? block space? '}' <If>
+    'if' '('? space? expression space? ')'? space? '{'? space? block space? '}'? <If>
 end
 
 rule unless
-    'unless(' space? expression space? ')' space? '{' space? block space? '}' <Unless>
+    'unless' '('? space? expression space? ')'? space? '{'? space? block space? '}'? <Unless>
 end
 # END FLOW CONTROL
 
