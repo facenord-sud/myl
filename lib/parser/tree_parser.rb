@@ -1,7 +1,7 @@
 class TreeParser
   require 'treetop'
   Treetop.load(File.expand_path(File.join(File.dirname(__FILE__), 'myl_parser.treetop')))
-  @@parser = MylParser.new
+  @@parser = MylReferenceParserParser.new
 
   def self.parse(data)
     tree = @@parser.parse(data)

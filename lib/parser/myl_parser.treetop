@@ -1,7 +1,7 @@
 # More info on PEGs: http://en.wikipedia.org/wiki/Parsing_expression_grammar
 # More info on Treetop: http://treetop.rubyforge.org/
 
-grammar Myl
+grammar MylReferenceParser
     rule block
         statement+ <Block>
     end
